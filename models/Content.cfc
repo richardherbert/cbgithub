@@ -27,7 +27,14 @@ component accessors="true" {
     ) {
 // drop down into Java to decode the Base64 string due to a bug in Railo 4.2+ and Lucee 4+
 // https://luceeserver.atlassian.net/browse/LDEV-555
-        return toString( variables.base64Library.decodeBase64( variables.content ), arguments.encoding );
-    }
+        if( ( findNoCase( "lucee", server.coldfusion.productName )
+            || findNoCase( "railo", server.coldfusion.productName ) )
+        ) {
+            var decodedContent = variables.base64Library.decodeBase64( variables.content );
+        } else {
+            var decodedContent = toBinary( variables.content );
+        }
 
+        return toString( decodedContent, arguments.encoding );
+    }
 }
