@@ -52,10 +52,6 @@ component {
         param arguments.result.content = "";
         param arguments.result.encoding = "";
 
-        if( result.type == "file" && result.content != "" && findNoCase( 'lucee', server.coldfusion.productName ) ) {
-            result.content = correctBinaryForLucee( result.content );
-        }
-
         return populator.populateFromStruct(
             target = content,
             memento = {
@@ -74,19 +70,6 @@ component {
             },
             ignoreEmpty = true
         );
-    }
-
-    private function correctBinaryForLucee(
-        required string string
-    ) {
-        var content = trim( arguments.string );
-        var lastChar = mid( content, content.len()-1, 1 );
-
-        if( lastChar == '=' ) {
-            return mid( content, 1, content.len()-1 );
-        }
-
-        return content;
     }
 
 }
