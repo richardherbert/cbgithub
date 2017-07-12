@@ -38,15 +38,15 @@ component accessors="true" {
         return toString( decodedContent, arguments.encoding );
     }
 
-    function getDownloadURL() {
+    function getDownloadUrl() {
         return variables.download_url;
     }
 
-    function getGitURL() {
+    function getGitUrl() {
         return variables.git_url;
     }
 
-    function getHtmlURL() {
+    function getHtmlUrl() {
         return variables.html_url;
     }
 
