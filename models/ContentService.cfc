@@ -28,17 +28,17 @@ component {
     ) {
         arguments.endpoint = "/repos/#arguments.owner#/#repo#/contents/#path#?ref=#arguments.ref#";
 
-        var contents = [];
-
         var response = APIRequest.get( argumentCollection = arguments );
         var result = deserializeJSON( response.filecontent );
 
         if ( isArray( result ) ) {
+            var contents = [];
+
             for ( var content in result ) {
                 contents.append( populateContentFromAPI( content, arguments.encoding ) );
             }
         } else {
-            contents.append( populateContentFromAPI( result, arguments.encoding ) );
+            var contents = populateContentFromAPI( result, arguments.encoding );
         }
 
         return contents;

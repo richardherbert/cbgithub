@@ -23,11 +23,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             } );
 
             it( "can read a file", function() {
-                var files = ContentService.get( "elpete", "cbgithub", "ModuleConfig.cfc", "master" );
-
-                expect( files.len() ).toBe( 1 );
-
-                var file = files[ 1 ];
+                var file = ContentService.get( "elpete", "cbgithub", "ModuleConfig.cfc", "master" );
 
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
@@ -40,6 +36,16 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
 
                 expect( file.getContent() ).toInclude( "function configure() {" );
+            } );
+
+            it( "can read a directory", function() {
+                var files = ContentService.get( "elpete", "cbgithub", "models", "master" );
+
+                expect( files ).toBeArray();
+
+                files.each( function( file ) {
+                    expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
+                } );
             } );
         } );
     }
