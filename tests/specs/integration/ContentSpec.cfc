@@ -17,7 +17,11 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             } );
 
             it( "can read a file", function() {
-                var file = ContentService.get( "elpete", "cbgithub", "/ModuleConfig.cfc", "master" );
+                var files = ContentService.get( "elpete", "cbgithub", "ModuleConfig.cfc", "master" );
+
+                expect( files.len() ).toBe( 1 );
+
+                var file = files[ 1 ];
 
                 expect( file ).toBeInstanceOf( "Content" );
                 expect( file.getName() ).toBe( "ModuleConfig.cfc" );
