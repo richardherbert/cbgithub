@@ -13,12 +13,10 @@ component {
         arguments.endpoint = "/repos/#arguments.owner#/#repo#/readme?ref=#arguments.ref#";
 
         var response = APIRequest.get( argumentCollection = arguments );
+
         var result = deserializeJSON( response.filecontent );
 
-        return populateContentFromAPI( result )
-
-// writedump( var='#result#', label='result', expand=0, abort=1, format='classic' );
-        // return toString( toBinary( result.content ), arguments.encoding );
+        return populateContentFromAPI( result );
     }
 
     function get(
@@ -61,7 +59,7 @@ component {
         return populator.populateFromStruct(
             target = content,
             memento = {
-                "content" = toString( binaryDecode( result.content, result.encoding ), arguments.encoding ),
+                "content" = result.content,
                 "_links" = result._links,
                 "html_url" = result.html_url,
                 "sha" = result.sha,
