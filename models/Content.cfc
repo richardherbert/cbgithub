@@ -13,6 +13,7 @@ component accessors="true" {
     property name="url" default="";
     property name="size" default="";
     property name="name" default="";
+    property name="submodule_git_url" default="";
     property name="type" default="";
     property name="git_url" default="";
     property name="download_url" default="";
@@ -20,6 +21,12 @@ component accessors="true" {
 
     function init() {
         variables.base64Library = createObject( "java", "org.apache.commons.codec.binary.Base64" );
+
+        variables._links = {
+            "git": "",
+            "self": "",
+            "html": ""
+        };
     }
 
     function getContent(
@@ -35,7 +42,21 @@ component accessors="true" {
             var decodedContent = toBinary( variables.content );
         }
 
-        return toString( decodedContent, arguments.encoding );
+        if( isContentImage() ) {
+            return decodedContent;
+        } else {
+            return toString( decodedContent, arguments.encoding );
+        }
+    }
+
+    boolean function isContentImage() {
+        try {
+            var possibleImage = imageReadBase64( variables.content );
+        } catch( any exception ) {
+            return false;
+        }
+
+        return isImage( possibleImage );
     }
 
     function getDownloadUrl() {
@@ -52,5 +73,9 @@ component accessors="true" {
 
     function getLinks() {
         return variables._links;
+    }
+
+    function getSubmoduleGitUrl() {
+        return variables.submodule_git_url;
     }
 }
