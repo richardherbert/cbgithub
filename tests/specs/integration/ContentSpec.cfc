@@ -10,9 +10,15 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             it( "can retrieve the README file", function() {
                 var readme = ContentService.getReadMe( "elpete", "cbgithub", "master" );
 
-                expect( readme ).toBeInstanceOf( "Content" );
+                expect( readme ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
+
                 expect( readme.getName() ).toBe( "README.md" );
                 expect( readme.getType() ).toBe( "file" );
+                expect( readme.getHtmlURL() ).toBe( "https://github.com/elpete/cbgithub/blob/master/README.md" );
+                expect( readme.getPath() ).toBe( "README.md" );
+                expect( readme.getDownloadURL() ).toBe( "https://raw.githubusercontent.com/elpete/cbgithub/master/README.md" );
+                expect( readme.getEncoding() ).toBe( "base64" );
+
                 expect( readme.getContent() ).toInclude( "GitHub" );
             } );
 
