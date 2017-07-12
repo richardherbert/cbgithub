@@ -37,4 +37,20 @@ component accessors="true" {
 
         return toString( decodedContent, arguments.encoding );
     }
+
+    function getDownloadURL() {
+        return variables.download_url;
+    }
+
+    function getGitURL() {
+        return variables.git_url;
+    }
+
+    function getHtmlURL() {
+        return variables.html_url;
+    }
+
+    function getLinks() {
+        return variables._links;
+    }
 }
