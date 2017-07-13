@@ -55,18 +55,18 @@ component {
         return populator.populateFromStruct(
             target = content,
             memento = {
-                "content" = result.content,
-                "_links" = result._links,
-                "html_url" = result.html_url,
-                "sha" = result.sha,
-                "path" = result.path,
-                "url" = result.url,
-                "size" = result.size,
-                "name" = result.name,
-                "type" = result.type,
-                "git_url" = result.git_url,
-                "download_url" = result.download_url,
-                "encoding" = result.encoding
+                "content" = arguments.result.content,
+                "_links" = arguments.result._links,
+                "html_url" = arguments.result.html_url,
+                "sha" = arguments.result.sha,
+                "path" = arguments.result.path,
+                "url" = arguments.result.url,
+                "size" = arguments.result.size,
+                "name" = arguments.result.name,
+                "type" = arguments.result.type,
+                "git_url" = arguments.result.git_url,
+                "download_url" = arguments.result.download_url,
+                "encoding" = arguments.result.encoding
             },
             ignoreEmpty = true
         );

@@ -18,10 +18,10 @@ component accessors="true" {
     property name="git_url" default="";
     property name="download_url" default="";
     property name="encoding" default="";
+    property name="mimetype" default="";
 
     function init() {
         variables.base64Library = createObject( "java", "org.apache.commons.codec.binary.Base64" );
-
         variables._links = {
             "git": "",
             "self": "",
@@ -34,29 +34,27 @@ component accessors="true" {
     ) {
 // drop down into Java to decode the Base64 string due to a bug in Railo 4.2+ and Lucee 4+
 // https://luceeserver.atlassian.net/browse/LDEV-555
-        if( ( findNoCase( "lucee", server.coldfusion.productName )
-            || findNoCase( "railo", server.coldfusion.productName ) )
-        ) {
-            var decodedContent = variables.base64Library.decodeBase64( variables.content );
-        } else {
-            var decodedContent = toBinary( variables.content );
-        }
+        var decodedContent = decodeContent();
 
-        if( isContentImage() ) {
-            return decodedContent;
-        } else {
+        if ( getMimeType() == "text/plain" ) {
             return toString( decodedContent, arguments.encoding );
         }
+
+        return decodedContent;
     }
 
-    boolean function isContentImage() {
-        try {
-            var possibleImage = imageReadBase64( variables.content );
-        } catch( any exception ) {
-            return false;
+    function getMimeType() {
+        if ( variables.type == "file" && variables.mimeType == "" ) {
+            var randomFilename = createUUID();
+
+            fileWrite( "ram:///#randomFilename#", decodeContent() );
+
+            variables.mimeType = fileGetMimeType( "ram:///#randomFilename#", true );
+
+            fileDelete( "ram:///#randomFilename#" );
         }
 
-        return isImage( possibleImage );
+        return variables.mimeType;
     }
 
     function getDownloadUrl() {
@@ -78,4 +76,17 @@ component accessors="true" {
     function getSubmoduleGitUrl() {
         return variables.submodule_git_url;
     }
+
+    private function decodeContent() {
+          if ( ( findNoCase( "lucee", server.coldfusion.productName )
+            || findNoCase( "railo", server.coldfusion.productName ) )
+        ) {
+            var decodedContent = variables.base64Library.decodeBase64( variables.content );
+        } else {
+            var decodedContent = toBinary( variables.content );
+        }
+
+        return decodedContent;
+    }
+
 }
