@@ -35,8 +35,6 @@ component accessors="true" {
     function getContent(
         string encoding = "UTF-8"
     ) {
-// drop down into Java to decode the Base64 string due to a bug in Railo 4.2+ and Lucee 4+
-// https://luceeserver.atlassian.net/browse/LDEV-555
         var decodedContent = decodeContent();
 
         if ( getMimeType() == "text/plain" ) {
