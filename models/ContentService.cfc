@@ -4,7 +4,7 @@ component {
     property name="populator" inject="wirebox:populator";
     property name="APIRequest" inject="APIRequest@cbgithub";
 
-    function getReadMe(
+    function getReadme(
         required string owner,
         required string repo,
         string ref = "master",
@@ -47,27 +47,18 @@ component {
     private function populateContentFromAPI(
         required struct result,
         string encoding = "utf-8",
-        content = wirebox.getInstance( "Content@cbgithub" )
+        content
     ) {
         param arguments.result.content = "";
         param arguments.result.encoding = "";
+        param arguments.result.submodule_git_url = "";
 
+        if ( isNull( arguments.content ) ) {
+            arguments.content = wirebox.getInstance( "Content@cbgithub" );
+        }
         return populator.populateFromStruct(
             target = content,
-            memento = {
-                "content" = arguments.result.content,
-                "_links" = arguments.result._links,
-                "html_url" = arguments.result.html_url,
-                "sha" = arguments.result.sha,
-                "path" = arguments.result.path,
-                "url" = arguments.result.url,
-                "size" = arguments.result.size,
-                "name" = arguments.result.name,
-                "type" = arguments.result.type,
-                "git_url" = arguments.result.git_url,
-                "download_url" = arguments.result.download_url,
-                "encoding" = arguments.result.encoding
-            },
+            memento = arguments.result,
             ignoreEmpty = true
         );
     }

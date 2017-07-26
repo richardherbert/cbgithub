@@ -20,13 +20,16 @@ component accessors="true" {
     property name="encoding" default="";
     property name="mimetype" default="";
 
-    function init() {
+    Content function init() {
         variables.base64Library = createObject( "java", "org.apache.commons.codec.binary.Base64" );
         variables._links = {
             "git": "",
             "self": "",
             "html": ""
         };
+        variables.mimeType = "";
+
+        return this;
     }
 
     function getContent(
@@ -78,15 +81,9 @@ component accessors="true" {
     }
 
     private function decodeContent() {
-          if ( ( findNoCase( "lucee", server.coldfusion.productName )
-            || findNoCase( "railo", server.coldfusion.productName ) )
-        ) {
-            var decodedContent = variables.base64Library.decodeBase64( variables.content );
-        } else {
-            var decodedContent = toBinary( variables.content );
-        }
-
-        return decodedContent;
+// drop down into Java to decode the Base64 string due to a bug in Railo 4.2+ and Lucee 4+
+// https://luceeserver.atlassian.net/browse/LDEV-555
+        return variables.base64Library.decodeBase64( variables.content );
     }
 
 }
