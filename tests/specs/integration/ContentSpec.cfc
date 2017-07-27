@@ -7,60 +7,53 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
     function run() {
         describe( "Contents...", function() {
-            xit( "can read the README file", function() {
-                var file = ContentService.getReadMe( "elpete", "cbgithub", "master" );
+            var owner = "elpete";
+            var repo = "cbgithub";
+            var ref = "master";
+
+            it( title="can read the README file (text/plain)", body=function( data ) {
+                var file = ContentService.getReadMe( data.owner, data.repo, data.ref );
 
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
                 expect( file.getName() ).toBe( "README.md" );
                 expect( file.getType() ).toBe( "file" );
-                expect( file.getHtmlUrl() ).toBe( "https://github.com/elpete/cbgithub/blob/master/README.md" );
+                expect( file.getHtmlUrl() ).toBe( "https://github.com/#data.owner#/#data.repo#/blob/master/README.md" );
                 expect( file.getPath() ).toBe( "README.md" );
-                expect( file.getDownloadUrl() ).toBe( "https://raw.githubusercontent.com/elpete/cbgithub/master/README.md" );
+                expect( file.getDownloadUrl() ).toBe( "https://raw.githubusercontent.com/#data.owner#/#data.repo#/master/README.md" );
                 expect( file.getEncoding() ).toBe( "base64" );
                 expect( file.getMimeType() ).toBe( "text/plain" );
-
-                // expect( readme.isContentImage() ).toBeFalse();
-debug(file.getMimeType());
-debug(file);
 
                 expect( file.getContent() ).toInclude( "GitHub" );
-            } );
+            }, data={ owner: owner, repo: repo, ref: ref } );
 
-            xit( "can read a file", function() {
-                var file = ContentService.get( "elpete", "cbgithub", "ModuleConfig.cfc", "master" );
+
+            var path = "models/Content.cfc";
+            var filename = "Content.cfc";
+
+            it( title="can read a file (text/plain)", body=function( data ) {
+                var file = ContentService.get( data.owner, data.repo, data.path, data.ref );
 
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
-                expect( file.getName() ).toBe( "ModuleConfig.cfc" );
+                expect( file.getName() ).toBe( data.filename );
                 expect( file.getType() ).toBe( "file" );
-                expect( file.getHtmlUrl() ).toBe( "https://github.com/elpete/cbgithub/blob/master/ModuleConfig.cfc" );
-                expect( file.getPath() ).toBe( "ModuleConfig.cfc" );
-                expect( file.getDownloadUrl() ).toBe( "https://raw.githubusercontent.com/elpete/cbgithub/master/ModuleConfig.cfc" );
+                expect( file.getHtmlUrl() ).toBe( "https://github.com/#data.owner#/#data.repo#/blob/master/#data.path#" );
+                expect( file.getPath() ).toBe( "#data.path#" );
+                expect( file.getDownloadUrl() ).toBe( "https://raw.githubusercontent.com/#data.owner#/#data.repo#/master/#data.path#" );
                 expect( file.getEncoding() ).toBe( "base64" );
                 expect( file.getMimeType() ).toBe( "text/plain" );
 
-                // expect( file.isContentImage() ).toBeFalse();
+                expect( file.getContent() ).toInclude( 'property name="ContentService"' );
+            }, data={ owner: owner, repo: repo, ref: ref, path: path, filename: filename } );
 
 
-debug(file.getMimeType());
-debug(file);
+            var owner = "richardherbert";
+            var ref = "develop";
+            var path = "tests/resources/samples/sample_text_file.exe";
 
-
-
-                expect( file.getContent() ).toInclude( "function configure() {" );
-            } );
-
-
-
-
-            it( "can read a file (application/x-msdownload)", function() {
-                var file = ContentService.get( "richardherbert", "cbgithub", "tests/resources/samples/sample_text_file.exe", "develop" );
-
-debug(file.getMimeType());
-debug(file);
-
-                expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
+            it( title="can read a file (application/x-msdownload)", body=function( data ) {
+                var file = ContentService.get( data.owner, data.repo, data.path, data.ref );
 
                 expect( file.getName() ).toBe( "sample_text_file.exe" );
                 expect( file.getType() ).toBe( "file" );
@@ -69,13 +62,13 @@ debug(file);
                 expect( file.getDownloadUrl() ).toBe( "https://raw.githubusercontent.com/richardherbert/cbgithub/develop/tests/resources/samples/sample_text_file.exe" );
                 expect( file.getEncoding() ).toBe( "base64" );
                 expect( file.getMimeType() ).toBe( "application/x-msdownload" );
-            } );
 
-            it( "can read a file (image/png)", function() {
-                var file = ContentService.get( "richardherbert", "cbgithub", "tests/resources/samples/sweep.png", "develop" );
+            }, data={ owner: owner, repo: repo, ref: ref, path: path } );
 
-debug(file.getMimeType());
-debug(file);
+            var path = "tests/resources/samples/sweep.png";
+
+            it( title="can read a file (image/png)", body=function( data ) {
+                var file = ContentService.get( data.owner, data.repo, data.path, data.ref );
 
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
@@ -86,13 +79,10 @@ debug(file);
                 expect( file.getDownloadUrl() ).toBe( "https://raw.githubusercontent.com/richardherbert/cbgithub/develop/tests/resources/samples/sweep.png" );
                 expect( file.getEncoding() ).toBe( "base64" );
                 expect( file.getMimeType() ).toBe( "image/png" );
-            } );
+            }, data={ owner: owner, repo: repo, ref: ref, path: path } );
 
             it( "can read a file (image/jpg)", function() {
                 var file = ContentService.get( "richardherbert", "cbgithub", "tests/resources/samples/sooty3.jpg", "develop" );
-
-debug(file.getMimeType());
-debug(file);
 
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
@@ -108,9 +98,6 @@ debug(file);
             it( "can read a file (application/pdf)", function() {
                 var file = ContentService.get( "richardherbert", "cbgithub", "tests/resources/samples/pdf_open_parameters.pdf", "develop" );
 
-debug(file.getMimeType());
-debug(file);
-
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
                 expect( file.getName() ).toBe( "pdf_open_parameters.pdf" );
@@ -125,9 +112,6 @@ debug(file);
             it( "can read a file (application/x-tika-ooxml)", function() {
                var file = ContentService.get( "richardherbert", "cbgithub", "tests/resources/samples/sample_word_file.docx", "develop" );
 
-debug(file.getMimeType());
-debug(file);
-
                 expect( file ).toBeInstanceOf( "testingModuleRoot.cbgithub.models.Content" );
 
                 expect( file.getName() ).toBe( "sample_word_file.docx" );
@@ -139,10 +123,8 @@ debug(file);
                 expect( file.getMimeType() ).toBe( "application/x-tika-ooxml" );
             } );
 
-            xit( "can read a directory", function() {
+            it( "can read a directory", function() {
                 var files = ContentService.get( "elpete", "cbgithub", "models", "master" );
-// debug(files.getMimeType());
-// debug(files);
 
                 expect( files ).toBeArray();
 
