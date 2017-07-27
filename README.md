@@ -52,7 +52,7 @@ moduleSettings = {
 
 GitHub offers a set of endpoints that provide [access to the contents of files](https://developer.github.com/v3/repos/contents/) in the repository. These include the ability to read the README file and any other file. Also it's possible to create, update and delete any file in the repository.
 
-### getReadMe( owner, repo, ref, encoding )
+### getReadme( owner, repo, ref, encoding )
 
 I return a `Content` object populated with information about the `README` file. Calling the `getContent()` method on the `Content` object will decode the raw `base64` string.
 
@@ -63,7 +63,7 @@ property name="ContentService" inject="ContentService@cbgithub";
 
 ...
 
-readme = ContentService.getReadMe( owner="elpete", repo="cbgithub", ref="master", encoding="utf-8" );
+readme = ContentService.getReadme( owner="elpete", repo="cbgithub", ref="master", encoding="utf-8" );
 ```
 
 #### Arguments
@@ -209,6 +209,39 @@ c3VwcG9ydCAyLWZhY3RvciBhdXRoZW50aWNhdGlvbiEp
         </tr>
 	</tbody>
 </table>
+
+
+
+### get( owner, repo, path, ref, encoding )
+
+I return a `Content` object populated with information about the requested file. Calling the `getContent()` method on the `Content` object will decode the raw `base64` string if it is has the mime type of text/plain.
+
+#### Example
+
+```
+property name="ContentService" inject="ContentService@cbgithub";
+
+...
+
+file = ContentService.get( owner="elpete", repo="cbgithub", ref="master", encoding="utf-8" );
+```
+
+#### Arguments
+
+Argument | Description
+-------- | -----------
+`owner` (required, string) | Name of the GitHub account
+`repo` (required, string) | Name of the repository of the `owner`
+`path` (required, string) | File pathname of the file to retrieve
+`ref` (optional, string="master") | Name of the branch, tag or commit to read from
+`encoding` (optional, string="utf-8") | Type of file encoding
+
+#### Response
+
+
+
+
+
 
 ## Testing
 
