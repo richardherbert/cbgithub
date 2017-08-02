@@ -48,11 +48,6 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 expect( file.getContent() ).toInclude( 'property name="ContentService"' );
             }, data={ owner: owner, repo: repo, ref: ref, path: path, filename: filename } );
 
-/*
-*/
-            var owner = "richardherbert";
-            var ref = "develop";
-
             it( title="can read a file (application/x-msdownload)", body=function( data ) {
                 var file = ContentService.get( data.owner, data.repo, data.path, data.ref );
                 var filename = listLast( data.path, "/" );
