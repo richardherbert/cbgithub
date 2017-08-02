@@ -21,10 +21,10 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
     }
 
     function run() {
-        describe( "Contents...", function() {
+        describe( "Contents", function() {
             var owner = "elpete";
-            var repo = "cbgithub";
-            var ref = "master";
+            var repo  = "cbgithub";
+            var ref   = "master";
 
             it( title="can read the README file (text/plain)", body=function( data ) {
                 var file = ContentService.getReadMe( data.owner, data.repo, data.ref );
@@ -35,10 +35,6 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 expect( file.getContent() ).toInclude( "GitHub" );
             }, data={ owner: owner, repo: repo, ref: ref, path: "README.md" } );
 
-
-            var path = "models/Content.cfc";
-            var filename = "Content.cfc";
-
             it( title="can read a file (text/plain)", body=function( data ) {
                 var file = ContentService.get( data.owner, data.repo, data.path, data.ref );
                 var filename = listLast( data.path, "/" );
@@ -46,7 +42,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 commonExpectations( file, data.owner, data.repo, data.path, data.ref, filename, "file", "text/plain" );
 
                 expect( file.getContent() ).toInclude( 'property name="ContentService"' );
-            }, data={ owner: owner, repo: repo, ref: ref, path: path, filename: filename } );
+            }, data={ owner: owner, repo: repo, ref: ref, path: "models/Content.cfc" } );
 
             it( title="can read a file (application/x-msdownload)", body=function( data ) {
                 var file = ContentService.get( data.owner, data.repo, data.path, data.ref );
