@@ -221,7 +221,7 @@ property name="ContentService" inject="ContentService@cbgithub";
 
 ...
 
-file = ContentService.get( owner="elpete", repo="cbgithub", ref="master", encoding="utf-8" );
+file = ContentService.get( owner="elpete", repo="cbgithub", path="models/Content.cfc", ref="master", encoding="utf-8" );
 ```
 
 #### Arguments
