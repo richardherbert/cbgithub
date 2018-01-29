@@ -34,14 +34,78 @@ component {
         if ( isArray( result ) ) {
             var contents = [];
 
-            for ( var content in result ) {
-                contents.append( populateContentFromAPI( content, arguments.encoding ) );
+            for ( local.content in result ) {
+                contents.append( populateContentFromAPI( local.content, arguments.encoding ) );
             }
         } else {
             var contents = populateContentFromAPI( result, arguments.encoding );
         }
 
         return contents;
+    }
+
+    function create(
+        required string owner,
+        required string repo,
+        required string path,
+        required string content,
+        required string message,
+        string branch = "master",
+        string encoding = "utf-8"
+    ) {
+        arguments.endpoint = "/repos/#arguments.owner#/#arguments.repo#/contents/#arguments.path#";
+
+        arguments.body = {
+            'message': arguments.message,
+            'content': toBase64( arguments.content ),
+            'branch': arguments.branch
+        };
+
+        var response = APIRequest.put( argumentCollection = arguments );
+        var result = deserializeJSON( response.filecontent );
+
+        return populateContentFromAPI( result.content, arguments.encoding );
+    }
+
+    function update(
+        required string owner,
+        required string repo,
+        required string path,
+        required string content,
+        required string message,
+        required string sha,
+        string branch = "master",
+        string encoding = "utf-8"
+    ) {
+        arguments.endpoint = "/repos/#arguments.owner#/#arguments.repo#/contents/#arguments.path#";
+
+        arguments.body = {
+            'message': arguments.message,
+            'content': toBase64( arguments.content ),
+            'branch': arguments.branch,
+            'sha': arguments.sha
+        };
+
+        var response = APIRequest.put( argumentCollection = arguments );
+        var result = deserializeJSON( response.filecontent );
+
+        return populateContentFromAPI( result.content, arguments.encoding );
+    }
+
+    function delete(
+        required string owner,
+        required string repo,
+        required string path,
+        required string message,
+        required string sha,
+        string branch = "master"
+    ) {
+        arguments.endpoint = "/repos/#arguments.owner#/#arguments.repo#/contents/#arguments.path#?message=#encodeForURL( arguments.message )#&sha=#arguments.sha#&branch=#arguments..branch#";
+
+        var response = APIRequest.delete( argumentCollection = arguments );
+        var result = deserializeJSON( response.filecontent );
+
+        return populateContentFromAPI( {} );
     }
 
     private function populateContentFromAPI(
