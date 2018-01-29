@@ -24,7 +24,7 @@ First [sign in to your GitHub Account](https://github.com/login) using your user
 
 #### Configuring cbgithub Security
 
-Now you need to take either your GitHub `username` and `password` or the `personal access token` you've just created and add them to your ColdBox Module settings in `config/Coldbox.cfc`. Take a look at [Retrieving Module Settings](https://coldbox.ortusbooks.com/content/full/modules/retrieving_&_interacting_with_module_settings/) for more information. 
+Now you need to take either your GitHub `username` and `password` or the `personal access token` you've just created and add them to your ColdBox Module settings in `config/Coldbox.cfc`. Take a look at [Retrieving Module Settings](https://coldbox.ortusbooks.com/content/full/modules/retrieving_&_interacting_with_module_settings/) for more information.
 
 Populate your `config/Coldbox.cfc` like this if you want to use your username and password...
 
@@ -370,6 +370,33 @@ XRoZW50aWNhdGlvbiEpc3VwcG9ydCAyLWZhY3RvciBhd
         </tr>
 	</tbody>
 </table>
+
+### create( owner, repo, path, content, message, branch )
+
+I return a `Content` object populated with information about the created file. Calling the `getContent()` method on the `Content` object will decode the raw `base64` string if it is has the mime type of text/plain.
+
+#### Example
+
+```
+property name="ContentService" inject="ContentService@cbgithub";
+
+...
+
+file = ContentService.create( owner="elpete", repo="cbgithub", path="tests/resources/samples/text.txt", "Hello world!", "Initial commit.", branch="master" );
+```
+
+#### Arguments
+
+Argument | Description
+-------- | -----------
+`owner` (required, string) | Name of the GitHub account
+`repo` (required, string) | Name of the repository of the `owner`
+`path` (required, string) | File pathname of the file to retrieve
+`content` (required, string) | Content to populate the path
+`message` (required, string) | Commit message
+`branch` (optional, string="master") | Name of the branch to commit to
+
+#### Response
 
 ## Testing
 
