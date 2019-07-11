@@ -100,7 +100,7 @@ component {
         required string sha,
         string branch = "master"
     ) {
-        arguments.endpoint = "/repos/#arguments.owner#/#arguments.repo#/contents/#arguments.path#?message=#encodeForURL( arguments.message )#&sha=#arguments.sha#&branch=#arguments..branch#";
+        arguments.endpoint = "/repos/#arguments.owner#/#arguments.repo#/contents/#arguments.path#?message=#encodeForURL( arguments.message )#&sha=#arguments.sha#&branch=#arguments.branch#";
 
         var response = APIRequest.delete( argumentCollection = arguments );
         var result = deserializeJSON( response.filecontent );
